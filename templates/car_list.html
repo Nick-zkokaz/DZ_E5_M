@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Список автомобилей в базе{% endblock %}
+
+{% block content %}
+    <header class="container-fluid sticky-top bg-secondary" style="border:1px solid #fff;">
+        <div class="d-flex flex-md-row flex-sm-column flex-column justify-content-between align-items-center">
+            <form class="form-group d-flex my-2" method="GET" action="{% url 'app:car-list' %}">
+                <input class="form-control" style="min-width:150px;max-width:300px;" type="text" placeholder="Поиск" aria-label="Search" name="search">
+                <button class="btn btn-primary mx-2" type="submit" name="btnSearch">Поиск</button>
+            </form>
+            <div class="text-white my-2">
+                <img src="media/icon/logo1.png" alt="">
+                {% if user.is_authenticated %}
+                Вы вошли как, {{ user.username }}!
+                {% else %}
+                Привет, гость!
+                {% endif %}
+            </div>
+            <form class="form-group d-flex my-2" method="POST">
+            {% csrf_token %}
+            {% if user.is_authenticated %}
+                <button class="btn btn-primary mr-2" type="submit" name="btnAddAuto">Добавить автомобиль</button>
+                <button class="btn btn-primary" type="submit" name="btnLogOut">Выйти</button>
+            {% else %}
+                <input type="text" class="form-control text-center mr-2" style="min-width:120px;max-width:160px;" name="username" autofocus="" required="" id="id_username" placeholder="Логин">
+                <input type="password" class="form-control text-center mr-2" style="min-width:120px;max-width:160px;" name="password" required="" id="id_password" placeholder="Пароль">
+                <button class="btn btn-primary" type="submit" name="btnLogIn">Войти</button>
+            {% endif %}
+            </form>
+        </div>
+    </header>
+    {%if errmsg == 1 %}
+    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+        <strong>Неверный логин или пароль. Попробуйте ввести ещё раз!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 my-3">
+                <div class="row">
+                    {% for car in object_list %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                        <div class="card shadow p-1 bg-secondary rounded">
+                            <div style="position:relative;padding-bottom:75%;">
+                            {%if car.photo %}
+                                <img src="{{ car.photo.url }}" class="w-100 h-100" style="position:absolute;top:0;left:0;object-fit:cover;" alt="">
+                            {% else %}
+                                <img src="media/photos/default.jpg" class="w-100 h-100" style="position:absolute;top:0;left:0;object-fit:cover;" alt="">
+                            {% endif %}
+                            </div>
+                            <div class="card-body text-white">
+                                <h4 class="card-title font-weight-bold">{{ car.manufacturer }}</h4>
+                                <p class="card-title"><span class="font-weight-bold text-info">Модель:</span> {{ car.model }}</p>
+                                <p class="card-title"><span class="font-weight-bold text-info">Год выпуска:</span> {{ car.release_year }}</p>
+                                <p class="card-title"><span class="font-weight-bold text-info">Коробка передач: </span>
+                                {%if car.gearbox == 1 %}
+                                    механика
+                                {% elif car.gearbox == 2 %}
+                                    автомат
+                                {% elif car.gearbox == 3 %}
+                                    робот
+                                {% endif %}
+                                </p>
+                                <p class="card-title"><span class="font-weight-bold text-info">Цвет:</span> {{ car.color }}</p>
+                                {% if user.is_authenticated and user.is_superuser %}
+                                <div class="d-flex flex-row justify-content-between">
+                                    <a href="{%url 'app:car-update' car.id %}" class="btn btn-success">Изменить</a>
+                                    <a href="{% url 'app:car-delete' car.id %}" class="btn btn-primary">Удалить</a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                  {% endfor %}
+                </div>
+            </div>  
+        </div>  
+    </div>
+
+{% endblock %}
