@@ -16,3 +16,6 @@ export PYTHONPATH='/bin/bash'
 (venv) > whith python - покажет место запуска python
 
 в файле
+git init
+git add .
+git commit -m "one"
