@@ -38,7 +38,9 @@ server {
     Должно быть:
       nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
       nginx: configuration file /etc/nginx/nginx.conf test is successful
+      
 База данных 
+
 1.) Теперь создадим базу данных (БД) в PostgreSQL:
     sudo -u postgres psql
 2.) Выполняем следующие команды:
@@ -50,6 +52,7 @@ server {
   INSERT INTO app_car (id,manufacturer,model,release_year,gearbox,color,photo) VALUES ('26','Коза','Коза Драная','2016','1','синий','photos/mazda-cx5_N2MXsGm.jpg');
 
 Запуск проекта
+
 i). В директории проекта:
     cd DZ_E5_M
 ii). Создаем виртуальное окружение:
