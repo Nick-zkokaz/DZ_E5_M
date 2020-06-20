@@ -1,8 +1,8 @@
 # Задание E5_10
 Для работы с клоном 
-1) Распакуйте проект в папку C:\E5_10_M
+1) Распакуйте проект в папку C:\DZ_E5_M
 2) Откройте командную строку и зайдите в директорию проекта:
-   - cd C:\E5_10_M
+   - cd C:\DZ_E5_M
 3) Создайте виртуальное окружение:
    - python -m venv django
 4) Активируйте виртуальное окружение:
@@ -16,31 +16,12 @@
 - Пароль: sf_password
 
 Деплой django-проекта на виртуальную машину:
-1) Сгенерируем ssh-ключ для нашей виртуальной машины (ВМ) с применением придуманного ВМ-пароля:
-   - sudo ssh-keygen -t rsa -b 2048
-2) Выведем ssh-ключ в окно терминала и скопируем его в буфер:
-   - sudo cat ~/.ssh/id_rsa.pub
-3) Создадим ВМ на ЯндексОблаке с применением ssh-ключа.
-4) Подключаемся к ВМ и вводим ВМ-пароль от сервера:
-   - sudo ssh user@ip (где user - имя пользователя и ip - публичный ip-адрес ВМ)
-5) Обновляем списки репозиториев и апгрейдимся:
-   - sudo apt update
-   - sudo apt upgrade
-6) Устанавливаем необходимые пакеты:
-   - sudo apt install nginx git python3.7 python3-pip libpq-dev python3.7-dev python3.7-venv postgresql postgresql-contrib
-7) А терперь, прежде чем настроить nginx, клонируем репозиторий проекта с github.
-   - Сгенерируем ssh-ключ для клонирования репозитория:
-      - sudo ssh-keygen -t rsa -b 2048
-   - Выведем ssh-ключ в окно терминала и скопируем его в буфер:
-       - sudo cat ~/.ssh/id_rsa.pub
-   - Зарегистрируем на своем аккаунте в разделе "SSH and GPG keys".
-8) Клонируем репозиторий проекта с github в /home/user/
-   - sudo git clone https://github.com/username/project (где useraname - имя вашего аккаунта и project - название репозитория проекта)
-9) После клонирования проекта запускаем nginx:
+1.  sudo git clone https://github.com/Nick-zkokaz/DZ_E5_M 
+2. После клонирования проекта запускаем nginx:
    - sudo service nginx start
-10) Создаем конфигурационный файл nginx для нашего сайта: 
-   - sudo nano /etc/nginx/sites-available/project (где project - название нашего проекта)
-11) Содержание конфигурационного файла:
+3. Создаем конфигурационный файл nginx для нашего сайта: 
+   - sudo nano /etc/nginx/sites-available/DZ_E5_M 
+4. Содержание конфигурационного файла:
 server {
     listen 80;
     server_name IP; # где IP - публичный IP нашей ВМ
@@ -49,46 +30,43 @@ server {
         proxy_pass http://127.0.0.1:8000;
     }
     location /static/ {
-        root /home/user/project/; # путь до папки статических файлов
+        root /home/user/projects/DZ_E5_M; # путь до папки статических файлов
     }
 }
-12) Добавляем символическую ссылку конфигурационного файла в папку sites-enabled
-   - sudo ln -fs /etc/nginx/sites-available/project /etc/nginx/sites-enabled/
-13) Удалим default конфигурационный файл nginx и его ссылку в sites-enabled:
-   - sudo rm -f /etc/nginx/sites-enabled/default
-   - sudo rm -f /etc/nginx/sites-available/default
-14) Проверим наш конфигурационный файл на корректность:
-   - sudo nginx -t
-   - Должно быть:
-      - nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
-      - nginx: configuration file /etc/nginx/nginx.conf test is successful
-15) Заставляем nginx перечитать конфигурацию:
-   - sudo nginx -s reload
-16) Но иногда этого может не хватить, тогда мы можем перезапустить nginx полностью:
-   - sudo service nginx restart
-17) Теперь создадим базу данных (БД) в PostgreSQL:
-   - sudo -u postgres psql
-18) Выполняем следующие команды:
-   - CREATE DATABASE database_name; (где database_name - имя нашей БД)
-   - CREATE USER database_user WITH PASSWORD 'database_password'; (где database_user - имя пользователя БД, database_password - пароль для БД)
-   - GRANT ALL PRIVILEGES ON DATABASE database_name TO database_user;
-   - \q (выход из консоли postgres)
-19) Теперь переходим в директорию проекта:
-   - cd project
-20) Создаем виртуальное окружение:
-   - python3.7 -m venv .venv
-21) Активируем виртуальное окружение:
-   - source .venv/bin/activate
-22) Создаем файл виртульного окружения (в той же папке, где находится settings.py)
-   - nano project/.env
-   - Впишем в него:
+5. Проверим наш конфигурационный файл на корректность:
+    sudo nginx -t
+    Должно быть:
+      nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+      nginx: configuration file /etc/nginx/nginx.conf test is successful
+База данных 
+1.) Теперь создадим базу данных (БД) в PostgreSQL:
+    sudo -u postgres psql
+2.) Выполняем следующие команды:
+   CREATE DATABASE database_name; (где database_name - имя нашей БД)
+   CREATE USER database_user WITH PASSWORD 'database_password'; (где database_user - имя пользователя БД, database_password - пароль для БД)
+   GRANT ALL PRIVILEGES ON DATABASE database_name TO database_user;
+   \q (выход из консоли postgres)
+  ЗЫ. Если база будет пустой (по каким либо причинам не загрузится, то)
+  INSERT INTO app_car (id,manufacturer,model,release_year,gearbox,color,photo) VALUES ('26','Коза','Коза Драная','2016','1','синий','photos/mazda-cx5_N2MXsGm.jpg');
+
+Запуск проекта
+i) В директории проекта:
+    cd DZ_E5_M
+ii) Создаем виртуальное окружение:
+    python3.8 -m venv .venv
+iii) Активируем виртуальное окружение:
+    source .venv/bin/activate
+iv) Создаем файл виртульного окружения (в той же папке , где находится settings.py)
+   nano project/.env
+    Впишем в него:
       - SECRET_KEY='very_strong_secret_key'
       - DB_NAME='database_name'
       - DB_USER='database_user'
       - DB_PASSWORD='database_password'
       - DB_HOST=127.0.0.1
       - DB_PORT=5432
-   - В settings.py: 
+   
+   В settings.py добавляем или берем settings_Srv.py : 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -99,21 +77,15 @@ DATABASES = {
         'PORT': os.getenv("DB_PORT", 5432),
     }
 }
-23) Установим зависимости из файла requirements.txt:
-   - pip3 install -r requiremnets.txt
-24) Отредактируем settings.py:
-   - nano project/settings.py
-   - Добавим в него:
-      - from dotenv import load_dotenv
-      - load_dotenv()
-      - DEBUG = False
-      - ALLOWED_HOSTS = ['127.0.0.1']
-25) Теперь выполняем необходимые команды:
-   - python3.7 manage.py collectstatic
-   - python3.7 manage.py makemigrations (опционально)
-   - python3.7 manage.py migrate
-   - python3.7 manage.py createsuperuser
-   - python3.7 manage.py loaddata data.json (опционально)
-26) По желанию можем запустить сервер командой:
-   - python3.7 manage.py runserver
+v) Установим пакеты requirements.txt:
+    pip3 install -r requirements.txt
+vi) Готовим включение:
+    python3.8 manage.py collectstatic
+    python3.8 manage.py migrate
+    python3.8 manage.py createsuperuser
+    
 
+запуск сервера командой:
+   -python3.8 manage.py runserver
+
+сервер отвечает по адресу http://84.201.174.145/ ПРОСЬБА проверяющему не удалять машины из списка
