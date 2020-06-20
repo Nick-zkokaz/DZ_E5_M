@@ -17,10 +17,13 @@
 
 Деплой django-проекта на виртуальную машину:
 1.  sudo git clone https://github.com/Nick-zkokaz/DZ_E5_M 
+
 2. После клонирования проекта запускаем nginx:
    - sudo service nginx start
+   
 3. Создаем конфигурационный файл nginx для нашего сайта: 
    - sudo nano /etc/nginx/sites-available/DZ_E5_M 
+   
 4. Содержание конфигурационного файла:
 server {
     listen 80;
@@ -33,6 +36,7 @@ server {
         root /home/user/projects/DZ_E5_M; # путь до папки статических файлов
     }
 }
+
 5. Проверим наш конфигурационный файл на корректность:
     sudo nginx -t
     Должно быть:
@@ -43,11 +47,17 @@ server {
 
 1.) Теперь создадим базу данных (БД) в PostgreSQL:
     sudo -u postgres psql
+    
 2.) Выполняем следующие команды:
    CREATE DATABASE database_name; (где database_name - имя нашей БД)
+   
    CREATE USER database_user WITH PASSWORD 'database_password'; (где database_user - имя пользователя БД, database_password - пароль для БД)
+   
    GRANT ALL PRIVILEGES ON DATABASE database_name TO database_user;
+   
+   
    \q (выход из консоли postgres)
+   
   ЗЫ. Если база будет пустой (по каким либо причинам не загрузится, то)
   INSERT INTO app_car (id,manufacturer,model,release_year,gearbox,color,photo) VALUES ('26','Коза','Коза Драная','2016','1','синий','photos/mazda-cx5_N2MXsGm.jpg');
 
@@ -55,12 +65,16 @@ server {
 
 i). В директории проекта:
     cd DZ_E5_M
+    
 ii). Создаем виртуальное окружение:
     python3.8 -m venv .venv
+    
 iii). Активируем виртуальное окружение:
     source .venv/bin/activate
+    
 iv). Создаем файл виртульного окружения (в той же папке , где находится settings.py)
    nano project/.env
+   
     Впишем в него:
       - SECRET_KEY='very_strong_secret_key'
       - DB_NAME='database_name'
@@ -80,11 +94,15 @@ DATABASES = {
         'PORT': os.getenv("DB_PORT", 5432),
     }
 }
+
 v). Установим пакеты requirements.txt:
     pip3 install -r requirements.txt
+    
 vi). Готовим включение:
     python3.8 manage.py collectstatic
+    
     python3.8 manage.py migrate
+    
     python3.8 manage.py createsuperuser
     
 
