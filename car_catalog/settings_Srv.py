@@ -27,7 +27,7 @@ SECRET_KEY = 'e#!xkhudyp^e4^ht0_tiwh7nn9n0oo8!%qftg2s8m5k%x6t1j&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['http://127.0.0.1', '127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -78,8 +78,12 @@ WSGI_APPLICATION = 'car_catalog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DB_NAME'),
+        'USER' : os.getenv('DB_USER'),
+        'PASSWORD' : os.getenv('DB_PASSWORD'),
+        'HOST' : os.getenv('DB_HOST', '127.0.0.1'),
+        'PORT' : os.getenv('DB_PORT', '5432'),
     }
 }
 
