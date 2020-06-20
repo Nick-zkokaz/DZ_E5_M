@@ -50,13 +50,13 @@ server {
   INSERT INTO app_car (id,manufacturer,model,release_year,gearbox,color,photo) VALUES ('26','Коза','Коза Драная','2016','1','синий','photos/mazda-cx5_N2MXsGm.jpg');
 
 Запуск проекта
-i) В директории проекта:
+i). В директории проекта:
     cd DZ_E5_M
-ii) Создаем виртуальное окружение:
+ii). Создаем виртуальное окружение:
     python3.8 -m venv .venv
-iii) Активируем виртуальное окружение:
+iii). Активируем виртуальное окружение:
     source .venv/bin/activate
-iv) Создаем файл виртульного окружения (в той же папке , где находится settings.py)
+iv). Создаем файл виртульного окружения (в той же папке , где находится settings.py)
    nano project/.env
     Впишем в него:
       - SECRET_KEY='very_strong_secret_key'
@@ -77,9 +77,9 @@ DATABASES = {
         'PORT': os.getenv("DB_PORT", 5432),
     }
 }
-v) Установим пакеты requirements.txt:
+v). Установим пакеты requirements.txt:
     pip3 install -r requirements.txt
-vi) Готовим включение:
+vi). Готовим включение:
     python3.8 manage.py collectstatic
     python3.8 manage.py migrate
     python3.8 manage.py createsuperuser
